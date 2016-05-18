@@ -8,7 +8,9 @@ import java.util.*;
 
 abstract class Type {}//Type
 
-class Int extends Type {}//Int
+class Int extends Type {
+
+}//Int
 
 class Bool extends Type {}//Bool
 
@@ -36,11 +38,25 @@ class PPCte extends PPExpr {
         this.val = val;
     }//PPCte
 
+    UPPExpre toUPP(ArrayList<String> locals){
+        return new UPPCte(val);
+    }
+
 }//PPCte
 
-class PPTrue extends PPExpr {}//PPTrue
+class PPTrue extends PPExpr {
 
-class PPFalse extends PPExpr {}//PPFalse
+    UPPTRUE toUPP(ArrayList<string> locals){
+        return new UPPTRUE();
+    }
+
+}//PPTrue
+
+class PPFalse extends PPExpr {
+    UPPFALSE toUPP(ArrayList<string> locals){
+        return new UPPFALSE();
+    }
+}//PPFalse
 
 class PPVar extends PPExpr {
 
@@ -49,6 +65,16 @@ class PPVar extends PPExpr {
     PPVar (String name) {
         this.name = name;
     }//PPVar
+
+    UPPVar toUPP(ArrayList<string> locals){
+        if (locals.contains(name)){
+            return new UPPVar(name);
+        } else {
+            return new UPPGVar(name);
+        }
+    }
+
+
 
 }//PPVar
 
@@ -64,6 +90,9 @@ class PPInv extends PPUnOp {
         this.e = e;
     }//PPInv
 
+    PPExpr toUPP(ArrayList<string> locals){
+        return new UPPSub(new UPPCte(0), e.toUPP(locals));
+
 }//PPInv
 
 class PPNot extends PPUnOp {
@@ -71,6 +100,10 @@ class PPNot extends PPUnOp {
     PPNot (PPExpr e) {
         this.e = e;
     }//PPNot
+
+    UPPNot toUPP(ArrayList<string> locals){
+        return new UPPNot(e.toUPP(locals));
+    }
 
 }//PPNot
 
@@ -87,6 +120,9 @@ class PPAdd extends PPBinOp {
         this.e2 = e2;
     }//PPAdd
 
+    UPPAdd toUPP(ArrayList<string> locals){
+        return new UPPAdd(e1.toUPP(locals),e2.toUPP(locals));
+    }
 }//PPAd
 
 class PPSub extends PPBinOp {
@@ -96,6 +132,8 @@ class PPSub extends PPBinOp {
         this.e2 = e2;
     }//PPSub
 
+    UPPSub toUPP(ArrayList<string> locals){ 
+        return new UPPSub(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPSub
 
 class PPMul extends PPBinOp {
@@ -104,6 +142,8 @@ class PPMul extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPMul
+
+    UPPMul toUPP(ArrayList<string> locals){ return new UPPMul(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPMul
 
@@ -114,6 +154,8 @@ class PPDiv extends PPBinOp {
         this.e2 = e2;
     }//PPDiv
 
+    UPPDiv toUPP(ArrayList<string> locals){ return new UPPDiv(e1.toUPP(locals),e2.toUPP(locals));}
+
 }//PPDiv
 
 class PPAnd extends PPBinOp {
@@ -123,6 +165,8 @@ class PPAnd extends PPBinOp {
         this.e2 = e2;
     }//PPAnd
 
+    UPPAnd toUPP(ArrayList<string> locals){ return new UPPAnd(e1.toUPP(locals),e2.toUPP(locals));}
+
 }//PPAnd
 
 class PPOr extends PPBinOp {
@@ -131,7 +175,7 @@ class PPOr extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPOr
-
+    UPPOr toUPP(ArrayList<string> locals){ return new UPPOr(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPOr
 
 class PPLe extends PPBinOp {
@@ -140,6 +184,7 @@ class PPLe extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPLe
+    UPPLe toUPP(ArrayList<string> locals){ return new UPPLe(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPLe
 
@@ -149,7 +194,7 @@ class PPLeq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPLeq
-
+    UPPLeq toUPP(ArrayList<string> locals){ return new UPPLeq(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPLeq
 
 class PPEq extends PPBinOp {
@@ -158,7 +203,7 @@ class PPEq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPEq
-
+    UPPEq toUPP(ArrayList<string> locals){ return new UPPEq(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPEq
 
 class PPNeq extends PPBinOp {
@@ -167,6 +212,7 @@ class PPNeq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPNeq
+    UPPNeq toUPP(ArrayList<string> locals){ return new UPPNeq(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPNeq
 
@@ -176,7 +222,7 @@ class PPGeq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPGeq
-
+    UPPGeq toUPP(ArrayList<string> locals){ return new UPPGeq(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPGeq
 
 class PPGe extends PPBinOp {
@@ -185,6 +231,7 @@ class PPGe extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPGe
+    UPPGe toUPP(ArrayList<string> locals){ return new UPPGe(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPGe
 

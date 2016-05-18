@@ -48,14 +48,6 @@ abstract class UPPUnOp extends UPPExpr {
 
 }//UPPUnOp
 
-class UPPInv extends UPPUnOp {
-
-    UPPInv (UPPExpr e) {
-        this.e = e;
-    }//UPPInv
-
-}//UPPInv
-
 class UPPNot extends UPPUnOp {
 
     UPPNot (UPPExpr e) {
@@ -178,36 +170,6 @@ class UPPGe extends UPPBinOp {
 
 }//UPPGe
 
-abstract class Callee {}//Callee
-
-class Read extends Callee {}//Read
-
-class Write extends Callee {}//Write
-
-class User extends Callee {
-
-    String name;
-
-    User (String name) {
-        this.name = name;
-    }//User
-
-}//User
-
-class Alloc extends Callee {}//Alloc
-
-class UPPFunCall extends UPPExpr {
-
-    Callee callee;
-    ArrayList<UPPExpr> args;
-
-    UPPFunCall (Callee callee, ArrayList<UPPExpr> args) {
-        this.callee = callee;
-        this.args = args;
-    }//FunCall
-
-}//FunCall
-
 class UPPLoad extends UPPExpr {
 
     UPPExpr addr;
@@ -300,22 +262,6 @@ class UPPSeq extends UPPInst {
 /***************************************/
 /* Definitions of functions/procedures */
 /***************************************/
-
-class Pair<L,R> {
-
-    final L left;
-    final R right;
-
-    public Pair(L left, R right) {
-        this.left = left;
-        this.right = right;
-    }//Pair
-
-    static <L,R> Pair<L,R> of(L left, R right){
-        return new Pair<L,R>(left, right);
-    }//of
-
-}//Pair
 
 abstract class UPPDef {
 
