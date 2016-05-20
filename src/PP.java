@@ -473,7 +473,7 @@ class PPFun extends PPDef {
             arguments.add(arg.left);
         }
         
-        for (Pair<String, Type> local : locals) {
+        for (Pair<String, Type> local : this.locals) {
             localsUPP.add(local.left);
         }
 
@@ -500,7 +500,7 @@ class PPProc extends PPDef {
             arguments.add(arg.left);
         }
         
-        for (Pair<String, Type> local : locals) {
+        for (Pair<String, Type> local : this.locals) {
             localsUPP.add(local.left);
         }
 
