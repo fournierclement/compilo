@@ -28,7 +28,9 @@ class Array extends Type {
 /* Arithmetic and boolean expressions */
 /**************************************/
 
-abstract class PPExpr {}//PPExpr
+abstract class PPExpr {
+    abstract UPPExpr toUPP(ArrayList<String> locals);
+}//PPExpr
 
 class PPCte extends PPExpr {
 
@@ -38,7 +40,7 @@ class PPCte extends PPExpr {
         this.val = val;
     }//PPCte
 
-    UPPExpre toUPP(ArrayList<String> locals){
+    UPPExpr toUPP(ArrayList<String> locals){
         return new UPPCte(val);
     }
 
@@ -46,15 +48,15 @@ class PPCte extends PPExpr {
 
 class PPTrue extends PPExpr {
 
-    UPPTRUE toUPP(ArrayList<string> locals){
-        return new UPPTRUE();
+    UPPTrue toUPP(ArrayList<String> locals){
+        return new UPPTrue();
     }
 
 }//PPTrue
 
 class PPFalse extends PPExpr {
-    UPPFALSE toUPP(ArrayList<string> locals){
-        return new UPPFALSE();
+    UPPFalse toUPP(ArrayList<String> locals){
+        return new UPPFalse();
     }
 }//PPFalse
 
@@ -66,7 +68,7 @@ class PPVar extends PPExpr {
         this.name = name;
     }//PPVar
 
-    UPPVar toUPP(ArrayList<string> locals){
+    UPPExpr toUPP(ArrayList<String> locals){
         if (locals.contains(name)){
             return new UPPVar(name);
         } else {
@@ -82,6 +84,8 @@ abstract class PPUnOp extends PPExpr {
 
     PPExpr e;
 
+    abstract UPPExpr toUPP(ArrayList<String> locals);
+
 }//PPUnOp
 
 class PPInv extends PPUnOp {
@@ -90,8 +94,8 @@ class PPInv extends PPUnOp {
         this.e = e;
     }//PPInv
 
-    PPExpr toUPP(ArrayList<string> locals){
-        return new UPPSub(new UPPCte(0), e.toUPP(locals));
+    UPPExpr toUPP(ArrayList<String> locals){
+        return new UPPSub(new UPPCte(0), e.toUPP(locals));}
 
 }//PPInv
 
@@ -101,7 +105,7 @@ class PPNot extends PPUnOp {
         this.e = e;
     }//PPNot
 
-    UPPNot toUPP(ArrayList<string> locals){
+    UPPNot toUPP(ArrayList<String> locals){
         return new UPPNot(e.toUPP(locals));
     }
 
@@ -120,7 +124,7 @@ class PPAdd extends PPBinOp {
         this.e2 = e2;
     }//PPAdd
 
-    UPPAdd toUPP(ArrayList<string> locals){
+    UPPAdd toUPP(ArrayList<String> locals){
         return new UPPAdd(e1.toUPP(locals),e2.toUPP(locals));
     }
 }//PPAd
@@ -132,7 +136,7 @@ class PPSub extends PPBinOp {
         this.e2 = e2;
     }//PPSub
 
-    UPPSub toUPP(ArrayList<string> locals){ 
+    UPPSub toUPP(ArrayList<String> locals){ 
         return new UPPSub(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPSub
 
@@ -143,7 +147,7 @@ class PPMul extends PPBinOp {
         this.e2 = e2;
     }//PPMul
 
-    UPPMul toUPP(ArrayList<string> locals){ return new UPPMul(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPMul toUPP(ArrayList<String> locals){ return new UPPMul(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPMul
 
@@ -154,7 +158,7 @@ class PPDiv extends PPBinOp {
         this.e2 = e2;
     }//PPDiv
 
-    UPPDiv toUPP(ArrayList<string> locals){ return new UPPDiv(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPDiv toUPP(ArrayList<String> locals){ return new UPPDiv(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPDiv
 
@@ -165,7 +169,7 @@ class PPAnd extends PPBinOp {
         this.e2 = e2;
     }//PPAnd
 
-    UPPAnd toUPP(ArrayList<string> locals){ return new UPPAnd(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPAnd toUPP(ArrayList<String> locals){ return new UPPAnd(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPAnd
 
@@ -175,7 +179,7 @@ class PPOr extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPOr
-    UPPOr toUPP(ArrayList<string> locals){ return new UPPOr(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPOr toUPP(ArrayList<String> locals){ return new UPPOr(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPOr
 
 class PPLe extends PPBinOp {
@@ -184,7 +188,7 @@ class PPLe extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPLe
-    UPPLe toUPP(ArrayList<string> locals){ return new UPPLe(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPLe toUPP(ArrayList<String> locals){ return new UPPLe(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPLe
 
@@ -194,7 +198,7 @@ class PPLeq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPLeq
-    UPPLeq toUPP(ArrayList<string> locals){ return new UPPLeq(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPLeq toUPP(ArrayList<String> locals){ return new UPPLeq(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPLeq
 
 class PPEq extends PPBinOp {
@@ -203,7 +207,7 @@ class PPEq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPEq
-    UPPEq toUPP(ArrayList<string> locals){ return new UPPEq(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPEq toUPP(ArrayList<String> locals){ return new UPPEq(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPEq
 
 class PPNeq extends PPBinOp {
@@ -212,7 +216,7 @@ class PPNeq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPNeq
-    UPPNeq toUPP(ArrayList<string> locals){ return new UPPNeq(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPNeq toUPP(ArrayList<String> locals){ return new UPPNeq(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPNeq
 
@@ -222,7 +226,7 @@ class PPGeq extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPGeq
-    UPPGeq toUPP(ArrayList<string> locals){ return new UPPGeq(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPGeq toUPP(ArrayList<String> locals){ return new UPPGeq(e1.toUPP(locals),e2.toUPP(locals));}
 }//PPGeq
 
 class PPGe extends PPBinOp {
@@ -231,7 +235,7 @@ class PPGe extends PPBinOp {
         this.e1 = e1;
         this.e2 = e2;
     }//PPGe
-    UPPGe toUPP(ArrayList<string> locals){ return new UPPGe(e1.toUPP(locals),e2.toUPP(locals));}
+    UPPGe toUPP(ArrayList<String> locals){ return new UPPGe(e1.toUPP(locals),e2.toUPP(locals));}
 
 }//PPGe
 
@@ -261,6 +265,14 @@ class PPFunCall extends PPExpr {
         this.args = args;
     }//FunCall
 
+    UPPFunCall toUPP(ArrayList<String> locals) {
+        ArrayList<UPPExpr> arguments = new ArrayList<>();
+        for (PPExpr arg : this.args) {
+            arguments.add(arg.toUPP(locals));
+        }
+        return new UPPFunCall(callee, arguments);
+    }
+
 }//FunCall
 
 class PPArrayGet extends PPExpr {
@@ -271,6 +283,12 @@ class PPArrayGet extends PPExpr {
         this.arr = arr;
         this.index = index;
     }//PPArrayGet
+
+    UPPExpr toUPP(ArrayList<String> locals){
+        UPPExpr uPPindex = new UPPMul(new UPPCte(4), index.toUPP(locals));
+        UPPExpr adress = new UPPAdd(arr.toUPP(locals),uPPindex);
+        return new UPPLoad(adress);
+    }
 
 }//PPArrayGet
 
@@ -284,13 +302,22 @@ class PPArrayAlloc extends PPExpr {
         this.size = size;
     }//PPArrayAlloc
 
+    UPPExpr toUPP(ArrayList<String> locals){
+        UPPExpr adress = new UPPMul(new UPPCte(4), size.toUPP(locals));
+        ArrayList<UPPExpr> arguments = new ArrayList<UPPExpr>();
+        arguments.add(adress);
+        return new UPPFunCall(new Alloc(), arguments);
+    }
+
 }//PPArrayAlloc
 
 /****************/
 /* Instructions */
 /****************/
 
-abstract class PPInst {}//PPInst
+abstract class PPInst {
+    abstract UPPInst toUPP(ArrayList<String> locals);
+}//PPInst
 
 class PPAssign extends PPInst {
 
@@ -301,6 +328,10 @@ class PPAssign extends PPInst {
         this.name = name;
         this.val = val;
     }//PPAssign
+
+    UPPAssign toUPP(ArrayList<String> locals){
+        return new UPPAssign(name, val.toUPP(locals));
+    }
 
 }//PPAssign
 
@@ -313,6 +344,15 @@ class PPArraySet extends PPInst {
         this.index = index;
         this.val = val;
     }//PPArraySet
+
+    UPPStore toUPP(ArrayList<String> locals){
+        UPPExpr address = new UPPAdd(arr.toUPP(locals),
+            new UPPMul(new UPPCte(4),
+                index.toUPP(locals))
+            );
+        UPPExpr uPPValue = val.toUPP(locals);
+        return new UPPStore(address, uPPValue);
+    }
 
 }//PPArraySet
 
@@ -327,6 +367,8 @@ class PPCond extends PPInst {
         this.i2 = i2;
     }//PPCond
 
+    UPPCond toUPP(ArrayList<String> locals) {return new UPPCond(cond.toUPP(locals), i1.toUPP(locals), i2.toUPP(locals));}
+
 }//PPCond
 
 class PPWhile extends PPInst {
@@ -338,6 +380,8 @@ class PPWhile extends PPInst {
         this.cond = cond;
         this.i = i;
     }//PPWhile
+
+    UPPWhile toUPP(ArrayList<String> locals) {return new UPPWhile(cond.toUPP(locals), i.toUPP(locals));}
 
 }//PPWhile
 
@@ -351,9 +395,19 @@ class PPProcCall extends PPInst {
         this.args = args;
     }//PPProcCall
 
+    UPPProcCall toUPP(ArrayList<String> locals){
+        ArrayList<UPPExpr> arguments = new ArrayList<>();
+        for (PPExpr arg : args){
+            arguments.add(arg.toUPP(locals));
+        }
+        return new UPPProcCall(callee, arguments);
+    }
+
 }//PPProcCall
     
-class PPSkip extends PPInst {}//PPSkip
+class PPSkip extends PPInst {
+    UPPSkip toUPP(ArrayList<String> locals) {return new UPPSkip();}
+}//PPSkip
 
 class PPSeq extends PPInst {
 
@@ -363,6 +417,8 @@ class PPSeq extends PPInst {
         this.i1 = i1;
         this.i2 = i2;
     }//PPSeq
+
+    UPPSeq toUPP(ArrayList<String> locals) {return new UPPSeq(i1.toUPP(locals), i2.toUPP(locals));}
 
 }//PPSeq
 
@@ -392,6 +448,8 @@ abstract class PPDef {
     ArrayList<Pair<String,Type>> args, locals;
     PPInst code;
 
+    abstract UPPDef toUPP(ArrayList<String> locals);
+
 }//PPDef
 
 class PPFun extends PPDef {
@@ -407,6 +465,21 @@ class PPFun extends PPDef {
         this.ret = ret;
     }//PPFun
 
+    UPPFun toUPP(ArrayList<String> locals){
+        ArrayList<String> arguments = new ArrayList<>();
+        ArrayList<String> localsUPP = new ArrayList<>();
+
+        for (Pair<String, Type> arg : args) {
+            arguments.add(arg.left);
+        }
+        
+        for (Pair<String, Type> local : locals) {
+            localsUPP.add(local.left);
+        }
+
+        return new UPPFun(this.name, arguments, localsUPP, code.toUPP(localsUPP));
+    }
+
 }//PPFun
 
 class PPProc extends PPDef {
@@ -418,6 +491,21 @@ class PPProc extends PPDef {
         this.locals = locals;
         this.code = code;
     }//PPProc
+
+    UPPProc toUPP(ArrayList<String> locals) {
+        ArrayList<String> arguments = new ArrayList<>();
+        ArrayList<String> localsUPP = new ArrayList<>();
+
+        for (Pair<String, Type> arg : args) {
+            arguments.add(arg.left);
+        }
+        
+        for (Pair<String, Type> local : locals) {
+            localsUPP.add(local.left);
+        }
+
+        return new UPPProc(name, arguments, localsUPP, code.toUPP(localsUPP));
+    }
 
 }//PPProc
 
@@ -438,4 +526,19 @@ class PPProg {
         this.code = code;
     }//PPProg
 
+    UPPProg toUPP() {
+        ArrayList<String> globalsUPP = new ArrayList<>();
+        ArrayList<UPPDef> defsUPP = new ArrayList<>();
+
+        for (Pair<String, Type> global : this.globals) {
+            globalsUPP.add(global.left);
+        }
+        
+        for (PPDef def : this.defs) {
+            defsUPP.add(def.toUPP(new ArrayList<String>()));
+        }
+
+        return new UPPProg(globalsUPP, defsUPP,code.toUPP(new ArrayList<String>()));
+    }
+    
 }//PPProg

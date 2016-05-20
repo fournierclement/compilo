@@ -170,6 +170,38 @@ class UPPGe extends UPPBinOp {
 
 }//UPPGe
 
+
+class Alloc extends Callee {
+    public String toString() {
+        return "alloc";
+    }
+}// Alloc
+
+class UPPFunCall extends UPPExpr {
+
+    Callee callee;
+    ArrayList<UPPExpr> args;
+
+    UPPFunCall(Callee callee, ArrayList<UPPExpr> args) {
+        this.callee = callee;
+        this.args = args;
+    }// FunCall
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(callee);
+        sb.append(" (");
+        for (UPPExpr arg : this.args) {
+            sb.append(" (");
+            sb.append(arg);
+            sb.append(") ");
+        }
+        sb.append(") ");
+        return sb.toString();
+    }
+
+}
+
 class UPPLoad extends UPPExpr {
 
     UPPExpr addr;
